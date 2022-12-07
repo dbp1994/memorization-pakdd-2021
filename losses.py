@@ -159,14 +159,6 @@ def get_loss(loss_name, num_class, reduction="none", **kwargs):
 
     if loss_name == "cce":
         loss_fn = nn.CrossEntropyLoss(reduction=reduction)
-    elif loss_name == "cce_new":
-        try:
-            alpha = kwargs['alpha']
-            beta = kwargs['beta']
-        except KeyError:
-            alpha = 0.1
-            beta = 1
-        loss_fn = CCE_new_APL(alpha=alpha, beta=beta, num_class=num_class, reduction=reduction)
     elif loss_name == "gce":
         try:
             q = kwargs['q']
@@ -175,12 +167,6 @@ def get_loss(loss_name, num_class, reduction="none", **kwargs):
         loss_fn = GCE(q=q, num_class=num_class, reduction=reduction)
     elif loss_name == "dmi":
         loss_fn = L_DMI(num_class=num_class)
-    elif loss_name == "rll":
-        try:
-            alpha = kwargs['alpha']
-        except KeyError:
-            alpha = 0.01 # 0.45 # 0.45/0.5/0.6 => works well with lr = 3e-3 => ADAM
-        loss_fn = RLL(alpha=alpha, num_class=num_class, reduction=reduction)
     elif loss_name == "mae":
         loss_fn = MAE(num_class=num_class, reduction=reduction)
     elif loss_name == "mse":
@@ -193,20 +179,6 @@ def get_loss(loss_name, num_class, reduction="none", **kwargs):
             alpha = 1 # 0.1
             beta = 1
         loss_fn = MSE_APL(alpha=alpha, beta=beta, num_class=num_class, reduction=reduction)
-    elif loss_name == "soft_hinge":
-        loss_fn = soft_hinge_mult(num_class=num_class, reduction=reduction)
-    elif loss_name == "forward":
-        try:
-            P = kwargs['P']
-        except KeyError:
-            raise SystemExit("Forgot to pass the estimated transition matrix.")
-        loss_fn = LC_forward(P=P, num_class=num_class, reduction=reduction)
-    elif loss_name == "backward":
-        try:
-            P = kwargs['P']
-        except KeyError:
-            raise SystemExit("Forgot to pass the estimated transition matrix.")
-        loss_fn = LC_backward(P=P, num_class=num_class, reduction=reduction)
     else:
         raise NotImplementedError("Loss Function Not Implemented.\n")
 
