@@ -13,7 +13,7 @@ python pakdd_exp_1.py --dataset mnist --noise_rate 0.4 --noise_type sym --loss_n
 
 Important arguments here:
 - ```dataset```: mnist or cifar10
-- ```noise_rate```: $ \in 0 \leq 1 $
+- ```noise_rate```: $\in 0 \eta \leq 1 $
 - ```noise_type```: sym (Symmetric) or cc (Class-conditional)
 - ```loss_name```: cce, mse, or norm_mse
 - ```architecture```: inception_small (Inception_Lite) or resnet (ResNet-32/ResNet-18)
