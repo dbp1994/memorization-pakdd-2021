@@ -19,5 +19,5 @@ Important arguments here:
 - ```architecture```: inception_small (Inception_Lite) or resnet (ResNet-32/ResNet-18)
 - ```num_runs```: number of times experiment would be repeated
 
-So, the aforementioned command will train the Inception_Lite network (no batch_norm or weight_decay) with CCE loss on un-augmented MNIST dataset (corrupted with 40% symmetric label noise). The training will be carried for a batch-size of 128, 200 epochs and a total of 5 runs.
+> So, the aforementioned command will train the Inception_Lite network (no batch_norm or weight_decay) with CCE loss on un-augmented MNIST dataset (corrupted with 40% symmetric label noise). The training will be carried for a batch-size of 128, 200 epochs and a total of 5 runs.
 
