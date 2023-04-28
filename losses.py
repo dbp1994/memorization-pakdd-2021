@@ -37,8 +37,37 @@ class MAE(nn.Module):
         else:
             return F.l1_loss(y_pred, y_true, reduction=self.reduction)
 
-class MSE(nn.Module):
+class RLL(nn.Module):
 
+    def __init__(self, alpha=0.01, num_class=10, reduction="none"):
+        super(RLL, self).__init__()
+        
+        self.alpha = torch.Tensor([alpha]).to(device)
+        self.reduction = reduction
+        self.num_class = num_class
+
+    def forward(self, prediction, target_label, one_hot=True):
+
+        if one_hot:
+            y_true = F.one_hot(target_label.type(torch.LongTensor), num_classes=self.num_class).to(device)
+
+        prediction = F.softmax(prediction, dim=1)
+        y_pred = torch.clamp(prediction, eps, 1-eps)
+
+        y_t = (((1.-y_true)/(self.num_class - 1))*torch.log(self.alpha + y_pred)) - (y_true*torch.log(self.alpha + y_pred)) \
+                    + y_true*(torch.log(self.alpha + 1) - torch.log(self.alpha))
+        
+        temp = torch.sum(y_t, dim = 1)
+
+        if self.reduction == "none":
+            return temp
+        elif self.reduction == "mean":
+            return torch.mean(temp, dim=0)
+        elif self.reduction == "sum":
+            return torch.sum(temp, dim=0)
+        
+        
+class MSE(nn.Module):
     def __init__(self, num_class=10, reduction="none"):
         super(MSE, self).__init__()
 
